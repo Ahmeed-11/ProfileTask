@@ -9,7 +9,9 @@
 </head>
 
 <body>
-    <h1>hi</h1>
+    <h1>Pofile Page</h1>
+
+    <livewire:profile />
 </body>
 
 </html>
