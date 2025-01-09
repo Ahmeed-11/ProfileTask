@@ -8,6 +8,7 @@ use Livewire\WithFileUploads;
 use Illuminate\Support\Facades\Storage;
 
 
+
 class Profile extends Component
 {
     use WithFileUploads;
@@ -19,7 +20,6 @@ class Profile extends Component
 
     public function update()
     {
-
         // get last profile
         $profile = ModelProfile::latest()->first();
 
@@ -30,39 +30,37 @@ class Profile extends Component
         // img = new image if user update his image
         if ($this->image) {
 
-            // delete old image
+            // delete old image if exists
             if ($profile && $profile->image && Storage::exists('public/profile_images/' . $profile->image)) {
                 Storage::delete('public/profile_images/' . $profile->image);
             }
 
-            // store new image
+            // upload new image
             $filename = $this->image->getClientOriginalName();
             $this->image->storeAs('public/profile_images', $filename);
         }
 
 
         if ($profile) {
-            // if there profile then update value
+            // if a profile exists, update its values
             $profile->update([
                 'name' => $this->name,
                 'email' => $this->email,
                 'image' => $filename,
             ]);
         } else {
-            // If there is no profile then create a new one
+            // if no profile exists, create new one
             ModelProfile::create([
                 'name' => $this->name,
                 'email' => $this->email,
                 'image' => $filename,
             ]);
         }
-
-
     }
     public function render()
     {
         $profile = ModelProfile::latest()->first();
 
-        return view('livewire.profile' , compact('profile'));
+        return view('livewire.profile', compact('profile'));
     }
 }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Profile;
 
 class ProfileController extends Controller
 {
@@ -13,11 +14,5 @@ class ProfileController extends Controller
 
         return view('Profile');
     }
-
-    public function create()
-    {
-        //
-    }
-
 
 }

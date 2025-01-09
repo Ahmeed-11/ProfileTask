@@ -11,4 +11,9 @@ class Profile extends Model
 
     // Accept All Fields
     protected $guarded = [];
+
+    public function getImageUrlAttribute()
+    {
+        return $this->image ? asset('storage/profile_images/' . $this->image) : null;
+    }
 }
