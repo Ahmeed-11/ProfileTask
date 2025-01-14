@@ -18,8 +18,10 @@ class ProfileController extends Controller
      */
     public function show()
     {
+        // Get last profile
         $profile = Profile::latest()->first();
 
+        // profile found
         if ($profile) {
             return response()->json([
                 'success' => true,
@@ -27,6 +29,7 @@ class ProfileController extends Controller
             ]);
         }
 
+        // profile not found
         return response()->json([
             'success' => false,
             'message' => 'Profile not found.',
@@ -34,21 +37,17 @@ class ProfileController extends Controller
     }
 
 
-    /**
-     * Update or create the profile details.
-     *
-     * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
     public function update(Request $request)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|max:255',
-            'image' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
-        ]);
 
         $profile = Profile::latest()->first();
+
+        $request->validate([
+            'name' => 'required|string|max:255|min:3',
+            'email' => 'required|email|max:255',
+            'image' => 'nullable',
+        ]);
+
         $filename = $profile->image ?? null;
 
         // Handle image upload if provided
@@ -58,6 +57,8 @@ class ProfileController extends Controller
                 Storage::delete('public/profile_images/' . $profile->image);
             }
 
+
+            // Store New image
             $filename = $request->file('image')->getClientOriginalName();
             $request->file('image')->storeAs('public/profile_images', $filename);
         }

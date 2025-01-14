@@ -16,14 +16,25 @@ class Profile extends Component
     public $email;
     public $image;
 
+    // Define validation rules
+    protected $rules = [
+        'name' => 'required|string|min:3|max:255',
+        'email' => 'required|email',
+        'image' => 'nullable|image'
+    ];
+
 
 
     public function update()
     {
+
+        // Validate the input fields
+        $this->validate();
+
         // get last profile
         $profile = ModelProfile::latest()->first();
 
-        // img  = same image if user already has image or null
+        // img = same image if user already has image or null
         $filename = $profile->image ?? null;
 
 
@@ -35,14 +46,15 @@ class Profile extends Component
                 Storage::delete('public/profile_images/' . $profile->image);
             }
 
-            // upload new image
+            // Store new image
             $filename = $this->image->getClientOriginalName();
             $this->image->storeAs('public/profile_images', $filename);
         }
 
 
+        // if a profile exists, update its values
+
         if ($profile) {
-            // if a profile exists, update its values
             $profile->update([
                 'name' => $this->name,
                 'email' => $this->email,
@@ -56,9 +68,16 @@ class Profile extends Component
                 'image' => $filename,
             ]);
         }
+
+        // Flash success message
+        session()->flash('message', 'Profile updated successfully!');
     }
     public function render()
     {
+        // In our case, we do not have any users,
+        // so we will only modify the last line of the DATABASE
+        // because there will only be one row.
+
         $profile = ModelProfile::latest()->first();
 
         return view('livewire.profile', compact('profile'));
