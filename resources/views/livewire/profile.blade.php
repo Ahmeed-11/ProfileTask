@@ -20,15 +20,25 @@
                     @endif
 
                     <div class="row">
-                        <!-- Profile Image -->
-                        <div class="col-md-4 text-center">
-                            <img src="{{ asset('storage/profile_images/' . $profile->image) }}" alt="Profile Image"
-                                class="img-fluid rounded-circle mb-3">
-                            <ul class="list-unstyled">
-                                <li><strong>{{ $profile->name }}</strong></li>
-                                <li>{{ $profile->email }}</li>
-                            </ul>
-                        </div>
+                        @if ($profile)
+                            <div class="col-md-4 text-center">
+                                <img src="{{ asset('storage/profile_images/' . $profile->image) }}" alt="Profile Image"
+                                    class="img-fluid rounded-circle mb-3">
+                                <ul class="list-unstyled">
+                                    <li><strong>{{ $profile->name }}</strong></li>
+                                    <li>{{ $profile->email }}</li>
+                                </ul>
+                            </div>
+                        @else
+                            <div class="col-md-4 text-center">
+                                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRL8vVfT9HcggxZ6FZMullER51rIRDeX6FOOA&s" alt="Profile Image"
+                                    class="img-fluid rounded-circle mb-3">
+                                <ul class="list-unstyled">
+                                    <li><strong>Guest</strong></li>
+                                    <li></li>
+                                </ul>
+                            </div>
+                        @endif
 
                         <!-- Profile Form -->
                         <div class="col-md-8">
